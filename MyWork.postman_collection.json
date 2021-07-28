@@ -10,6 +10,22 @@
 			"item": [
 				{
 					"name": "Get Work (all)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response has _id. We are setting id\", () => {\r",
+									"    var all_response =  pm.response.json()[0]\r",
+									"    var _id = all_response._id\r",
+									"    pm.expect(_id).to.be.a('string');\r",
+									"    pm.environment.set(\"work_id\", _id);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"method": "GET",
 						"header": [],
@@ -32,11 +48,27 @@
 				},
 				{
 					"name": "Get Work specific",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response has _id. We are setting id\", () => {\r",
+									"    var all_response =  pm.response.json()\r",
+									"    var _id = all_response._id\r",
+									"    pm.expect(_id).to.be.a('string');\r",
+									"    pm.environment.set(\"work_id\", _id);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://127.0.0.1:8000/work/60fed087a117a606d3ff3c41",
+							"raw": "http://127.0.0.1:8000/work/{{work_id}}",
 							"protocol": "http",
 							"host": [
 								"127",
@@ -47,7 +79,7 @@
 							"port": "8000",
 							"path": [
 								"work",
-								"60fed087a117a606d3ff3c41"
+								"{{work_id}}"
 							]
 						}
 					},
@@ -55,12 +87,28 @@
 				},
 				{
 					"name": "Update work",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response has _id. We are setting id\", () => {\r",
+									"    var all_response =  pm.response.json()\r",
+									"    var _id = all_response._id\r",
+									"    pm.expect(_id).to.be.a('string');\r",
+									"    pm.environment.set(\"work_id\", _id);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"method": "PUT",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"name\": \"Work Name - updated 4nd\"\r\n}",
+							"raw": "{\r\n    \"employers\": [\"{{employer_id}}\"]\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -68,7 +116,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://127.0.0.1:8000/work/60ff31aa9e8f8b6dc1cb5d04",
+							"raw": "http://127.0.0.1:8000/work/{{work_id}}",
 							"protocol": "http",
 							"host": [
 								"127",
@@ -79,7 +127,7 @@
 							"port": "8000",
 							"path": [
 								"work",
-								"60ff31aa9e8f8b6dc1cb5d04"
+								"{{work_id}}"
 							]
 						}
 					},
@@ -87,12 +135,37 @@
 				},
 				{
 					"name": "Create work",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response has _id. We are setting id\", () => {\r",
+									"    var all_response =  pm.response.json()\r",
+									"    var _id = all_response._id\r",
+									"    pm.expect(_id).to.be.a('string');\r",
+									"    pm.environment.set(\"work_id\", _id);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"method": "POST",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"name\": \"Work Name\"\r\n}",
+							"raw": "{\r\n    \"name\": \"RL - Irek\",\r\n    \"hour_loan\": 10.00\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -123,6 +196,31 @@
 			"item": [
 				{
 					"name": "Get Employer (all)",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response has _id. We are setting id\", () => {\r",
+									"    var all_response =  pm.response.json()[0]\r",
+									"    var _id = all_response._id\r",
+									"    pm.expect(_id).to.be.a('string');\r",
+									"    pm.environment.set(\"employer_id\", _id);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"method": "GET",
 						"header": [],
@@ -145,11 +243,27 @@
 				},
 				{
 					"name": "Get Employer specific",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response has _id. We are setting id\", () => {\r",
+									"    var all_response =  pm.response.json()\r",
+									"    var _id = all_response._id\r",
+									"    pm.expect(_id).to.be.a('string');\r",
+									"    pm.environment.set(\"employer_id\", _id);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://127.0.0.1:8000/employer/60fed087a117a606d3ff3c41",
+							"raw": "http://127.0.0.1:8000/employer/{{employer_id}}",
 							"protocol": "http",
 							"host": [
 								"127",
@@ -160,7 +274,7 @@
 							"port": "8000",
 							"path": [
 								"employer",
-								"60fed087a117a606d3ff3c41"
+								"{{employer_id}}"
 							]
 						}
 					},
@@ -168,6 +282,31 @@
 				},
 				{
 					"name": "Update employer",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response has _id. We are setting id\", () => {\r",
+									"    var all_response =  pm.response.json()\r",
+									"    var _id = all_response._id\r",
+									"    pm.expect(_id).to.be.a('string');\r",
+									"    pm.environment.set(\"employer_id\", _id);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"method": "PUT",
 						"header": [],
@@ -181,7 +320,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://127.0.0.1:8000/employer/60ff3271972d0a9c14cc7f21",
+							"raw": "http://127.0.0.1:8000/employer/{{employer_id}}",
 							"protocol": "http",
 							"host": [
 								"127",
@@ -192,7 +331,7 @@
 							"port": "8000",
 							"path": [
 								"employer",
-								"60ff3271972d0a9c14cc7f21"
+								"{{employer_id}}"
 							]
 						}
 					},
@@ -200,9 +339,43 @@
 				},
 				{
 					"name": "Create employer",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response has _id. We are setting id\", () => {\r",
+									"    var all_response =  pm.response.json()\r",
+									"    var _id = all_response._id\r",
+									"    pm.expect(_id).to.be.a('string');\r",
+									"    pm.environment.set(\"work_id\", _id);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"method": "POST",
 						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Ireneusz Teodorowski\",\r\n    \"email\": \"avonteodor@interia.eu\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
 						"url": {
 							"raw": "http://127.0.0.1:8000/employer",
 							"protocol": "http",
@@ -215,6 +388,370 @@
 							"port": "8000",
 							"path": [
 								"employer"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Event",
+			"item": [
+				{
+					"name": "Get Event (all)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response has _id. We are setting id\", () => {\r",
+									"    var all_response =  pm.response.json()[0]\r",
+									"    var _id = all_response._id\r",
+									"    pm.expect(_id).to.be.a('string');\r",
+									"    pm.environment.set(\"event_id\", _id);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://127.0.0.1:8000/event",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"event"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Specific Event",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response has _id. We are setting id\", () => {\r",
+									"    var all_response =  pm.response.json()\r",
+									"    var _id = all_response._id\r",
+									"    pm.expect(_id).to.be.a('string');\r",
+									"    pm.environment.set(\"event_id\", _id);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://127.0.0.1:8000/event/{{event_id}}",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"event",
+								"{{event_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update event",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response has _id. We are setting id\", () => {\r",
+									"    var all_response =  pm.response.json()\r",
+									"    var _id = all_response._id\r",
+									"    pm.expect(_id).to.be.a('string');\r",
+									"    pm.environment.set(\"event_id\", _id);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"WizzAir\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:8000/event/{{event_id}}",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"event",
+								"{{event_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create event",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response has _id. We are setting id\", () => {\r",
+									"    var all_response =  pm.response.json()\r",
+									"    var _id = all_response._id\r",
+									"    pm.expect(_id).to.be.a('string');\r",
+									"    pm.environment.set(\"event_id\", _id);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"work\": \"{{work_id}}\",\r\n    \"from_time\": 0.0,\r\n    \"to_time\": 450.0,\r\n    \"based_on_hour_loan\": true,\r\n    \"loan_on_top\": 10.00,\r\n    \"name\": \"Marktplaats\",\r\n    \"description\": \"Ik heb advertenties op marktplaats gezet.\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:8000/event",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"event"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Report",
+			"item": [
+				{
+					"name": "Get Report (all)",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response has _id. We are setting id\", () => {\r",
+									"    var all_response =  pm.response.json()[0]\r",
+									"    var _id = all_response._id\r",
+									"    pm.expect(_id).to.be.a('string');\r",
+									"    pm.environment.set(\"report_id\", _id);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://127.0.0.1:8000/report",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"report"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Specific Report",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response has _id. We are setting id\", () => {\r",
+									"    var all_response =  pm.response.json()\r",
+									"    var _id = all_response._id\r",
+									"    pm.expect(_id).to.be.a('string');\r",
+									"    pm.environment.set(\"report_id\", _id);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://127.0.0.1:8000/report/{{report_id}}",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"report",
+								"{{report_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Specific Report Pdf",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response has _id. We are setting id\", () => {\r",
+									"    var all_response =  pm.response.json()\r",
+									"    var _id = all_response._id\r",
+									"    pm.expect(_id).to.be.a('string');\r",
+									"    pm.environment.set(\"report_id\", _id);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://127.0.0.1:8000/report/{{report_id}}/txt",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"report",
+								"{{report_id}}",
+								"txt"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create report",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response has _id. We are setting id\", () => {\r",
+									"    var all_response =  pm.response.json()\r",
+									"    var _id = all_response._id\r",
+									"    pm.expect(_id).to.be.a('string');\r",
+									"    pm.environment.set(\"report_id\", _id);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"work_id\": \"{{work_id}}\",\r\n    \"events_ids\": [\"{{event_id}}\"]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:8000/report",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"report"
 							]
 						}
 					},
