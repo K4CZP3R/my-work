@@ -1,5 +1,5 @@
 from starlette.responses import JSONResponse
-from models.work import UpdateWorkModel, WorkModel
+from models.event import UpdateEventModel, EventModel
 from fastapi import APIRouter, Body
 from models.response import ResponseErrorModel
 from typing import List
@@ -7,20 +7,22 @@ from helpers.database import Database
 from fastapi.encoders import jsonable_encoder
 
 router = APIRouter(
-    prefix="/work", tags=["work"], responses={404: {"Error": {"message": "Not found."}}}
+    prefix="/event",
+    tags=["event"],
+    responses={404: {"Error": {"message": "Not found."}}},
 )
 
-COLLECTION_NAME = "work"
+COLLECTION_NAME = "event"
 
 
-@router.get("/", response_model=list[WorkModel])
-async def read() -> List[str]:
+@router.get("/", response_model=list[EventModel])
+async def read() -> List[EventModel]:
     return await Database().find(COLLECTION_NAME, 1000)
 
 
-@router.get("/{id}", response_model=WorkModel)
+@router.get("/{id}", response_model=EventModel)
 async def read_work_by_id(id: str) -> str:
-    resp = await Database().find_one("work", {"_id": id})
+    resp = await Database().find_one(COLLECTION_NAME, {"_id": id})
     if resp is None:
         return JSONResponse(
             status_code=404,
@@ -31,8 +33,8 @@ async def read_work_by_id(id: str) -> str:
     return resp
 
 
-@router.post("/", response_description="Add new employer", response_model=WorkModel)
-async def create(model: WorkModel = Body(...)):
+@router.post("/", response_description="Add new event", response_model=EventModel)
+async def create(model: EventModel = Body(...)):
     model = jsonable_encoder(model)
     new_model = await Database().insert_one(COLLECTION_NAME, model)
     created_model = await Database().find_one(
@@ -41,8 +43,10 @@ async def create(model: WorkModel = Body(...)):
     return created_model
 
 
-@router.put("/{id}", response_description="Update employer", response_model=WorkModel)
-async def update_work(id: str, update_model: UpdateWorkModel = Body(...)):
+@router.put(
+    "/{id}", response_description="Update employer", response_model=EventModel
+)
+async def update_work(id: str, update_model: UpdateEventModel = Body(...)):
     resp = await Database().update(COLLECTION_NAME, id, update_model)
 
     if resp is None:
