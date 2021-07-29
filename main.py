@@ -1,3 +1,4 @@
+from fastapi.middleware.cors import CORSMiddleware
 from logging.config import dictConfig
 from helpers.database import Database
 from my_log_conf import log_config
@@ -9,9 +10,13 @@ from routers import authentication_router
 from fastapi import FastAPI
 from helpers.log import Log
 
+origins = ["http://127.0.0.1:4200"]
 
 db = Database()
 app = FastAPI()
+
+app.add_middleware(CORSMiddleware, allow_origins=origins,
+                   allow_credentials=True, allow_methods=["*"], allow_headers=["*"])
 
 
 @app.on_event("startup")
