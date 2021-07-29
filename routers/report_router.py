@@ -6,7 +6,7 @@ from models.event import EventModel
 from starlette.responses import JSONResponse
 from models.report import ReportModel, CreateReportModel
 from models.employer import EmployerModel
-from fastapi import APIRouter, Body
+from fastapi import APIRouter, Body, Depends
 from models.response import ResponseErrorModel
 from typing import List
 from helpers.database import Database
@@ -15,6 +15,7 @@ from helpers.log import Log
 from helpers.unobject import UnObject
 from helpers.pdf import PDFGenerator
 import json
+from routers.authentication_router import get_current_active_user
 
 router = APIRouter(
     prefix="/report",
@@ -25,12 +26,12 @@ router = APIRouter(
 COLLECTION_NAME = "report"
 
 
-@router.get("/", response_model=list[ReportModel])
+@router.get("/", response_model=list[ReportModel], dependencies=[Depends(get_current_active_user)])
 async def read() -> List[ReportModel]:
     return await Database().find(COLLECTION_NAME, 1000)
 
 
-@router.get("/{id}", response_model=ReportModel)
+@router.get("/{id}", response_model=ReportModel, dependencies=[Depends(get_current_active_user)])
 async def read_work_by_id(id: str) -> str:
     resp = await Database().find_one(COLLECTION_NAME, {"_id": id})
     if resp is None:
@@ -42,7 +43,7 @@ async def read_work_by_id(id: str) -> str:
         )
     return resp
 
-@router.get("/{id}/txt", response_description="Generate txt report.")
+@router.get("/{id}/txt", response_description="Generate txt report.", dependencies=[Depends(get_current_active_user)])
 async def read_work_pdf_by_id(id: str) -> str:
     resp = await Database().find_one(COLLECTION_NAME, {"_id": id})
     if resp is None:
@@ -87,7 +88,7 @@ async def read_work_pdf_by_id(id: str) -> str:
 
     return FileResponse("out.pdf", media_type="application/pdf")
 
-@router.post("/", response_description="Add new report", response_model=ReportModel)
+@router.post("/", response_description="Add new report", response_model=ReportModel, dependencies=[Depends(get_current_active_user)])
 async def create(model: CreateReportModel= Body(...)):
 
     work_obj = await Database().find_one("work", {'_id': str(model.work_id)})

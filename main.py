@@ -5,11 +5,14 @@ from routers import employer_router
 from routers import event_router
 from routers import report_router
 from routers import work_router
+from routers import authentication_router
 from fastapi import FastAPI
 from helpers.log import Log
 
+
 db = Database()
 app = FastAPI()
+
 
 @app.on_event("startup")
 def on_startup():
@@ -21,3 +24,4 @@ app.include_router(work_router.router)
 app.include_router(employer_router.router)
 app.include_router(event_router.router)
 app.include_router(report_router.router)
+app.include_router(authentication_router.router)

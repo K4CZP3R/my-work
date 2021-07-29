@@ -1,2 +1,6 @@
 MONGO_HOST = "mongodb://localhost"
 MONGO_DB = "MyWork"
+USER_USERNAME = "kacper"
+USER_PASSWORD = "kacper"
+SECRET_KEY = "cfa0b64b4f2a74fd7889144b15fe5118eab17dcdf1d7f75d6db75fd7d8db3e1e"
+ALGO = "HS256"

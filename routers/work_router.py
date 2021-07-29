@@ -1,24 +1,28 @@
-from starlette.responses import JSONResponse
+from fastapi.routing import APIRoute
+from starlette import responses
+from starlette.responses import JSONResponse, Response
 from models.work import UpdateWorkModel, WorkModel
-from fastapi import APIRouter, Body
+from fastapi import APIRouter, Body, Depends, Request
 from models.response import ResponseErrorModel
-from typing import List
+from typing import List, Callable
 from helpers.database import Database
 from fastapi.encoders import jsonable_encoder
+from routers.authentication_router import get_current_active_user
+
 
 router = APIRouter(
-    prefix="/work", tags=["work"], responses={404: {"Error": {"message": "Not found."}}}
+    prefix="/work", tags=["work"], responses={404: {"Error": {"message": "Not found."}},}
 )
 
 COLLECTION_NAME = "work"
 
 
-@router.get("/", response_model=list[WorkModel])
+@router.get("/", response_model=list[WorkModel], dependencies=[Depends(get_current_active_user)])
 async def read() -> List[str]:
     return await Database().find(COLLECTION_NAME, 1000)
 
 
-@router.get("/{id}", response_model=WorkModel)
+@router.get("/{id}", response_model=WorkModel, dependencies=[Depends(get_current_active_user)])
 async def read_work_by_id(id: str) -> str:
     resp = await Database().find_one("work", {"_id": id})
     if resp is None:
@@ -31,7 +35,7 @@ async def read_work_by_id(id: str) -> str:
     return resp
 
 
-@router.post("/", response_description="Add new employer", response_model=WorkModel)
+@router.post("/", response_description="Add new employer", response_model=WorkModel, dependencies=[Depends(get_current_active_user)])
 async def create(model: WorkModel = Body(...)):
     model = jsonable_encoder(model)
     new_model = await Database().insert_one(COLLECTION_NAME, model)
@@ -41,7 +45,7 @@ async def create(model: WorkModel = Body(...)):
     return created_model
 
 
-@router.put("/{id}", response_description="Update employer", response_model=WorkModel)
+@router.put("/{id}", response_description="Update employer", response_model=WorkModel, dependencies=[Depends(get_current_active_user)])
 async def update_work(id: str, update_model: UpdateWorkModel = Body(...)):
     resp = await Database().update(COLLECTION_NAME, id, update_model)
 
