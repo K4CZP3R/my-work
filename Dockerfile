@@ -2,7 +2,7 @@ FROM python:3.9
 
 WORKDIR /user/src/app
 
-RUN pip install fastapi uvicorn[standard] gunicorn motor python-jose[cryptography] passlib python-multipart fpdf
+RUN pip install fastapi uvicorn[standard] gunicorn motor python-jose[cryptography] passlib python-multipart fpdf aiofiles
 
 
 COPY . .
