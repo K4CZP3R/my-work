@@ -1,12 +1,11 @@
 FROM python:3.9
 
-RUN pip install fastapi uvicorn
+WORKDIR /user/src/app
+
+RUN pip install fastapi uvicorn[standard] gunicorn motor python-jose[cryptography] passlib python-multipart fpdf
+
 
 COPY . .
 
-RUN pip install -r requirements.txt
+CMD ["gunicorn", "main:app", "-w", "4", "-k" ,"uvicorn.workers.UvicornWorker", "-b", "0.0.0.0:80"]
 
-
-
-EXPOSE 80
-CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port","80"]
