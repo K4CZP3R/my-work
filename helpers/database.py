@@ -25,7 +25,7 @@ class Database(metaclass=Singleton):
     def __init__(self) -> None:
         self.client = motor.motor_asyncio.AsyncIOMotorClient(config.MONGO_HOST)
 
-        self.db = self.client["MyWork"]
+        self.db = self.client[config.MONGO_DB]
 
     def find_one(self, db_name: str, filter: dict):
         return self.db[db_name].find_one(filter)
