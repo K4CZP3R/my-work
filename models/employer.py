@@ -28,6 +28,7 @@ class EmployerModel(BaseModel):
 
 class UpdateEmployerModel(BaseModel):
     name: Optional[str]
+    address: Optional[str]
 
     class Config:
         arbitrary_types_allowed = True
