@@ -8,4 +8,4 @@ class Time:
 
     @staticmethod
     def get_hours_between_ms(start_unix: float, end_unix: float) -> float:
-        return end_unix - start_unix
+        return (((end_unix - start_unix)/1000)/60)/60
