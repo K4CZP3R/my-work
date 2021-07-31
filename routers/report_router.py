@@ -51,39 +51,7 @@ async def read_work_pdf_by_id(id: str) -> str:
         )
     
     report_obj = ReportModel.parse_obj(resp)
-
-    section = []
-    section.append(f"Werkgever: {report_obj.work.name} ({report_obj.work.id})")
-    section.append(f"Uurloon: {report_obj.work.hour_loan} euro")
-    section.append(f"Werkgever(s):")
-    for werkgever in report_obj.employers:
-        werkgever: EmployerModel
-        section.append(f"- {werkgever.name} ({werkgever.email}) Adres: {werkgever.address} ({werkgever.id})")
-    section.append("")
-    section.append("")
-    section.append(f"Events:")
-    total_to_pay = 0.00
-    for event in report_obj.events:
-        event: EventModel
-        worked_for_hours = round((event.to_time - event.from_time) / 60 / 60, 2)
-
-        
-        event_money = 0.00
-        if event.based_on_hour_loan:    
-            event_money = (worked_for_hours * report_obj.work.hour_loan)
-        event_money += event.loan_on_top
-        
-        section.append(f"- {event.name} ({event.description}) | ({worked_for_hours} x {report_obj.work.hour_loan}) + {event.loan_on_top} = {event_money}")
-        total_to_pay += event_money
-    section.append("")
-    section.append("")
-    section.append("Summary:")
-    section.append(f"Totaal te betalen: {total_to_pay} euro.")
-    
-    PDFGenerator.generate(section, "out.pdf")
-
-    return FileResponse("out.pdf", media_type="application/pdf")
-
+    return await report_obj.generate_report()
 @router.post("/", response_description="Add new report", response_model=ReportModel, dependencies=[Depends(get_current_active_user)])
 async def create(model: CreateReportModel= Body(...)):
 

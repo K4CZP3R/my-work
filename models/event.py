@@ -4,6 +4,7 @@ from pydantic import BaseModel, Field
 from bson import ObjectId
 from typing import Optional
 from helpers.database import PyObjectId, Database
+from helpers.log import Log
 
 class EventModel(BaseModel):
     id: PyObjectId = Field(default_factory=PyObjectId, alias="_id")
@@ -22,13 +23,15 @@ class EventModel(BaseModel):
 
     async def get_worked_for(self):
         return Time.get_hours_between_ms(self.from_time, self.to_time)
-
     async def get_loan(self):
-        resp = await Database().find_one("work", {"_id": self.work})
+        resp = await Database().find_one("work", {"_id": str(self.work)})
         if resp is None:
+            Log().error(f"There is no work with id {self.work}")
             return None
-        resp: WorkModel
-        return self.loan_on_top + ((await self.get_worked_for() * resp.hour_loan) if self.based_on_hour_loan else 0)
+        resp = WorkModel.parse_obj(resp)
+        hour_loan = await self.get_worked_for() * resp.hour_loan
+        loan_total = self.loan_on_top + ((await self.get_worked_for() * resp.hour_loan) if self.based_on_hour_loan else 0)
+        return loan_total
 
     class Config:
         allow_population_by_field_name = True

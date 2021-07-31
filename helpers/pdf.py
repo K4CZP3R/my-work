@@ -1,7 +1,7 @@
 from os import stat
 from fpdf import FPDF
 
-class PDF(FPDF):
+class PDFReport(FPDF):
     def header(self):
         self.set_font('Arial', 'B', 15)
         self.cell(80)
@@ -19,7 +19,7 @@ class PDF(FPDF):
 class PDFGenerator:
     @staticmethod
     def generate(lines: list[str], out_file: str):
-        pdf = PDF()
+        pdf = PDFReport()
         pdf.alias_nb_pages()
         pdf.add_page()
         pdf.set_font('Times', '', 12)
