@@ -1,4 +1,4 @@
-from helpers.time_helpers import TimeHelpers
+from helpers.time import Time
 from pydantic import BaseModel, Field
 from bson import ObjectId
 from typing import Optional
@@ -8,7 +8,7 @@ from helpers.database import PyObjectId
 class WorkModel(BaseModel):
     id: PyObjectId = Field(default_factory=PyObjectId, alias="_id")
     name: str = Field(...)
-    created_at: float = Field(TimeHelpers.get_unix())
+    created_at: float = Field(Time.get_unix())
     employers: list[PyObjectId] = Field([])
     hour_loan: float = Field(...)
 

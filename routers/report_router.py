@@ -1,6 +1,4 @@
-import re
 from models.work import WorkModel
-import motor
 from starlette.responses import FileResponse
 from models.event import EventModel
 from starlette.responses import JSONResponse
@@ -12,9 +10,7 @@ from typing import List
 from helpers.database import Database
 from fastapi.encoders import jsonable_encoder
 from helpers.log import Log
-from helpers.unobject import UnObject
 from helpers.pdf import PDFGenerator
-import json
 from routers.authentication_router import get_current_active_user
 
 router = APIRouter(

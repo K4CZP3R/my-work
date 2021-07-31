@@ -1,4 +1,4 @@
-from helpers.time_helpers import TimeHelpers
+from helpers.time import Time
 from pydantic import BaseModel, Field
 from bson import ObjectId
 from typing import Optional
@@ -10,7 +10,7 @@ class EmployerModel(BaseModel):
     name: str = Field(...)
     email: str = Field(...)
     address: Optional[str]
-    created_at: float = Field(TimeHelpers.get_unix())
+    created_at: float = Field(Time.get_unix())
 
     class Config:
         allow_population_by_field_name = True
