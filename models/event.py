@@ -1,23 +1,34 @@
-from helpers.time_helpers import TimeHelpers
+from models.work import WorkModel
+from helpers.time import Time
 from pydantic import BaseModel, Field
 from bson import ObjectId
 from typing import Optional
-from helpers.database import PyObjectId
+from helpers.database import PyObjectId, Database
 
 class EventModel(BaseModel):
     id: PyObjectId = Field(default_factory=PyObjectId, alias="_id")
     work: PyObjectId = Field(...)
     
-    created_at: float = Field(TimeHelpers.get_unix())
+    created_at: float = Field(Time.get_unix())
     
-    from_time: float = Field(TimeHelpers.get_unix())
-    to_time: float = Field(TimeHelpers.get_unix())
+    from_time: float = Field(Time.get_unix())
+    to_time: float = Field(Time.get_unix())
 
     based_on_hour_loan: bool = Field(...)
     loan_on_top: float = Field(...)
 
     name: str = Field(...)
     description: str = Field(...)
+
+    async def get_worked_for(self):
+        return Time.get_hours_between_ms(self.from_time, self.to_time)
+
+    async def get_loan(self):
+        resp = await Database().find_one("work", {"_id": self.work})
+        if resp is None:
+            return None
+        resp: WorkModel
+        return self.loan_on_top + ((await self.get_worked_for() * resp.hour_loan) if self.based_on_hour_loan else 0)
 
     class Config:
         allow_population_by_field_name = True
