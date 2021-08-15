@@ -20,7 +20,7 @@ async def read() -> List[str]:
     return await Database().find(COLLECTION_NAME, 1000)
 
 
-@router.get("/{id}", response_model=WorkModel, dependencies=[Depends(get_current_active_user)])
+@router.get("/{work_id}", response_model=WorkModel, dependencies=[Depends(get_current_active_user)])
 async def read_work_by_id(work_id: str) -> Any:
     resp = await Database().find_one(COLLECTION_NAME, {"_id": work_id})
     return resp if resp is not None else Error.generic_error(404, "Not found", 404)
@@ -37,7 +37,7 @@ async def create(model: WorkModel = Body(...)):
     return created_model
 
 
-@router.put("/{id}", response_description="Update employer", response_model=WorkModel,
+@router.put("/{work_id}", response_description="Update employer", response_model=WorkModel,
             dependencies=[Depends(get_current_active_user)])
 async def update_work(work_id: str, update_model: UpdateWorkModel = Body(...)):
     resp = await Database().update(COLLECTION_NAME, work_id, update_model)

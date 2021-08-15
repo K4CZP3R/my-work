@@ -40,7 +40,7 @@ class ReportModel(BaseModel):
         for employer in self.employers:
             employers += f"- {employer.name} ({employer.email}) ({employer.id})\n"
             if (addr := employer.address) is not None:
-                employer += f"  {addr}\n"
+                employers += f"  {addr}\n"
         events = ""
         for event in self.events:
             events += f"- {event.name} ({event.description}) | {await event.get_worked_for()} | On top: {event.loan_on_top} | {await event.get_loan()}\n"

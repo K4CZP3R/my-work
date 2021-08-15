@@ -33,7 +33,7 @@ async def read_report_by_id(report_id: str) -> str:
     return resp if resp is not None else Error.generic_error(404, "Not found", 404)
 
 
-@router.get("/{id}/txt", response_description="Generate pdf report.", dependencies=[Depends(get_current_active_user)])
+@router.get("/{report_id}/txt", response_description="Generate pdf report.", dependencies=[Depends(get_current_active_user)])
 async def read_report_pdf_by_id(report_id: str) -> str:
     resp = await Database().find_one(COLLECTION_NAME, {"_id": report_id})
     return (await ReportModel.parse_obj(resp).generate_report()) if resp is not None else Error.generic_error(404,
@@ -45,7 +45,7 @@ async def read_report_pdf_by_id(report_id: str) -> str:
 @router.post("/", response_description="Add new report", response_model=ReportModel,
              dependencies=[Depends(get_current_active_user)])
 async def create(model: CreateReportModel = Body(...)):
-    work_obj = await Database().find_one(COLLECTION_NAME, {'_id': str(model.work_id)})
+    work_obj = await Database().find_one("work", {'_id': str(model.work_id)})
     if work_obj is None:
         return Error.generic_error(404, "Work not found!", 404)
     work_obj = WorkModel.parse_obj(work_obj)

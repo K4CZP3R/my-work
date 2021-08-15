@@ -10,7 +10,7 @@ class ConfigKeys:
     ALGO = "ALGO"
 
 
-MONGO_HOST = os.environ[ConfigKeys.MONGO_HOST] if ConfigKeys.MONGO_HOST in os.environ else "mongodb://localhost"
+MONGO_HOST = os.environ[ConfigKeys.MONGO_HOST] if ConfigKeys.MONGO_HOST in os.environ else "mongodb://root:example@localhost"
 MONGO_DB = os.environ[ConfigKeys.MONGO_DB] if ConfigKeys.MONGO_DB in os.environ else "MyWork"
 USER_USERNAME = os.environ[ConfigKeys.USER_USERNAME] if ConfigKeys.USER_USERNAME in os.environ else "kacper"
 USER_PASSWORD = os.environ[ConfigKeys.USER_PASSWORD] if ConfigKeys.USER_PASSWORD in os.environ else "kacper"
