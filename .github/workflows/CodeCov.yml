@@ -1,4 +1,4 @@
-name: CodeCov
+name: Test and get coverage
 on: [push, pull_request]
 jobs:
   run:
@@ -7,9 +7,8 @@ jobs:
       OS: ubuntu-latest
       PYTHON: '3.9'
     steps:
-    - uses: checkout@v2
-      with:
-        fetch-depth: ‘2’
+    - name: Checkout repository
+      uses: actions/checkout@v2
 
     - name: Setup Python
       uses: actions/setup-python@master
@@ -19,5 +18,7 @@ jobs:
       run: |
         pip install -r requirements.txt
         coverage run -m pytest
-    - name: Upload Coverage to Codecov
+    - name: "Upload coverage to Codecov"
       uses: codecov/codecov-action@v1
+      with:
+        fail_ci_if_error: true
