@@ -11,9 +11,11 @@ from models.work import WorkModel
 from models.event import EventModel
 from helpers.pdf import PDFGenerator, PDFReport
 
+
 class CreateReportModel(BaseModel):
     work_id: PyObjectId = Field(...)
     events_ids: list[PyObjectId] = Field(...)
+
 
 class ReportModel(BaseModel):
     id: PyObjectId = Field(default_factory=PyObjectId, alias="_id")
@@ -31,7 +33,7 @@ class ReportModel(BaseModel):
                 total += event_loan
         Log().info(f"total: {total}")
         return round(total, round_to)
-    
+
     async def generate_report(self):
         Log().info("This is log!")
         employers = ""
@@ -57,9 +59,8 @@ class ReportModel(BaseModel):
         """
 
         PDFGenerator.generate(text.split("\n"), f"{self.id}.pdf")
-        
-        return FileResponse(f"{self.id}.pdf", media_type="application/pdf")
 
+        return FileResponse(f"{self.id}.pdf", media_type="application/pdf")
 
     class Config:
         allow_population_by_field_name = True

@@ -1,5 +1,4 @@
 from models.work import WorkModel
-from starlette.responses import FileResponse
 from models.event import EventModel
 from starlette.responses import JSONResponse
 from models.report import ReportModel, CreateReportModel
@@ -10,7 +9,8 @@ from typing import List
 from helpers.database import Database
 from fastapi.encoders import jsonable_encoder
 from helpers.log import Log
-from helpers.pdf import PDFGenerator
+from helpers.error import Error
+from routers.employer_router import COLLECTION_NAME as Employer_COLLECTION_NAME
 from routers.authentication_router import get_current_active_user
 
 router = APIRouter(
@@ -28,41 +28,26 @@ async def read() -> List[ReportModel]:
 
 
 @router.get("/{id}", response_model=ReportModel, dependencies=[Depends(get_current_active_user)])
-async def read_work_by_id(id: str) -> str:
-    resp = await Database().find_one(COLLECTION_NAME, {"_id": id})
-    if resp is None:
-        return JSONResponse(
-            status_code=404,
-            content=jsonable_encoder(
-                ResponseErrorModel(message="Not found", code=0x1337)
-            ),
-        )
-    return resp
+async def read_report_by_id(report_id: str) -> str:
+    resp = await Database().find_one(COLLECTION_NAME, {"_id": report_id})
+    return resp if resp is not None else Error.generic_error(404, "Not found", 404)
 
-@router.get("/{id}/txt", response_description="Generate txt report.", dependencies=[Depends(get_current_active_user)])
-async def read_work_pdf_by_id(id: str) -> str:
-    resp = await Database().find_one(COLLECTION_NAME, {"_id": id})
-    if resp is None:
-        return JSONResponse(
-            status_code=404,
-            content=jsonable_encoder(
-                ResponseErrorModel(message="Not found", code=0x1337)
-            ),
-        )
-    
-    report_obj = ReportModel.parse_obj(resp)
-    return await report_obj.generate_report()
-@router.post("/", response_description="Add new report", response_model=ReportModel, dependencies=[Depends(get_current_active_user)])
-async def create(model: CreateReportModel= Body(...)):
 
-    work_obj = await Database().find_one("work", {'_id': str(model.work_id)})
+@router.get("/{id}/txt", response_description="Generate pdf report.", dependencies=[Depends(get_current_active_user)])
+async def read_report_pdf_by_id(report_id: str) -> str:
+    resp = await Database().find_one(COLLECTION_NAME, {"_id": report_id})
+    return (await ReportModel.parse_obj(resp).generate_report()) if resp is not None else Error.generic_error(404,
+                                                                                                              "Not "
+                                                                                                              "found",
+                                                                                                              404)
+
+
+@router.post("/", response_description="Add new report", response_model=ReportModel,
+             dependencies=[Depends(get_current_active_user)])
+async def create(model: CreateReportModel = Body(...)):
+    work_obj = await Database().find_one(COLLECTION_NAME, {'_id': str(model.work_id)})
     if work_obj is None:
-        return JSONResponse(
-            status_code=404,
-            content=jsonable_encoder(
-                ResponseErrorModel(message="Work not found!", code=0x1337)
-            )
-        )
+        return Error.generic_error(404, "Work not found!", 404)
     work_obj = WorkModel.parse_obj(work_obj)
 
     employer_objs: List[EmployerModel] = []
@@ -72,16 +57,15 @@ async def create(model: CreateReportModel= Body(...)):
         if employer_obj is not None:
             employer_objs.append(EmployerModel.parse_obj(employer_obj))
 
-
     event_objs: List[EventModel] = []
     for event_id in model.events_ids:
         event_obj = await Database().find_one("event", {"_id": str(event_id)})
         if event_obj is not None:
             event_objs.append(EventModel.parse_obj(event_obj))
-    
+
     model = ReportModel(work=work_obj, events=event_objs, employers=employer_objs)
     model = jsonable_encoder(model)
-    
+
     new_model = await Database().insert_one(COLLECTION_NAME, model)
     created_model = await Database().find_one(
         COLLECTION_NAME, {"_id": new_model.inserted_id}

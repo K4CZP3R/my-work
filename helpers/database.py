@@ -3,6 +3,8 @@ from helpers.singleton import Singleton
 import motor.motor_asyncio
 import config
 from bson import ObjectId
+from typing import Generic
+from typing import TypeVar
 
 
 class PyObjectId(ObjectId):
