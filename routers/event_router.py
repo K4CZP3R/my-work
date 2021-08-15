@@ -46,7 +46,7 @@ async def create(model: EventModel = Body(...)):
 
 
 @router.put(
-    "/{work_id}", response_description="Update employer", response_model=EventModel,
+    "/{event_id}", response_description="Update employer", response_model=EventModel,
     dependencies=[Depends(get_current_active_user)]
 )
 async def update_event(event_id: str, update_model: UpdateEventModel = Body(...)):
