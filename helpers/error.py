@@ -4,6 +4,10 @@ from fastapi.encoders import jsonable_encoder
 from models.response import ResponseErrorModel
 
 
+class EntryNotFound(Exception):
+    pass
+
+
 class Error:
     @staticmethod
     def generic_error(http_error_code: int, message: str, app_error_code: int) -> JSONResponse:
