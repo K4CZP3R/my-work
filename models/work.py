@@ -1,9 +1,9 @@
 from helpers.time import Time
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, ValidationError
 from bson import ObjectId
 from typing import Optional, List
 from helpers.database import PyObjectId, Database
-from helpers.error import EntryNotFound
+from helpers.error import EntryNotFound, EntryMalformed
 from fastapi.encoders import jsonable_encoder
 
 
@@ -50,7 +50,13 @@ class WorkModelFactory(Database):
         Gets all of the work object from the database
         :return List[WorkModel]: List of all the work models
         """
-        return await self.find(self.COLLECTION_NAME, 1000)
+        db_resp = await self.find(self.COLLECTION_NAME, 1000)
+        to_resp = []
+
+        for i in db_resp:
+            to_resp.append(WorkModel.parse_obj(i))
+
+        return to_resp
 
     async def get_by_id(self, work_id: str) -> WorkModel:
         """
@@ -62,7 +68,11 @@ class WorkModelFactory(Database):
         db_resp = await self.find_one(self.COLLECTION_NAME, {"_id": work_id})
         if db_resp is None:
             raise EntryNotFound("Can't find this work by id.")
-        return db_resp
+
+        try:
+            return WorkModel.parse_obj(db_resp)
+        except ValidationError as e:
+            raise EntryMalformed(e)
 
     async def create_from_model(self, model: WorkModel) -> WorkModel:
         """
@@ -75,7 +85,13 @@ class WorkModelFactory(Database):
         new_model = await self.insert_one(self.COLLECTION_NAME, model)
         return await self.get_by_id(new_model.inserted_id)
 
-    async def update_by_id_with_model(self, work_id: str, update_model: UpdateWorkModel):
+    async def update_by_id_with_model(self, work_id: str, update_model: UpdateWorkModel) -> WorkModel:
+        """
+        Updates a existing work model and then returns it?
+        :param work_id: Id of work to update
+        :param update_model: New content for the work
+        :return: Updated work object
+        """
         db_resp = await self.update(self.COLLECTION_NAME, work_id, update_model)
         if db_resp is None:
             raise EntryNotFound("Can't find this work by id")
