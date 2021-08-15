@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "e5edf3d6-7941-452b-9704-444dbbcc762a",
+		"_postman_id": "e89875fc-c91d-4505-b402-4a21cc02a4e6",
 		"name": "MyWork",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -27,10 +27,20 @@
 						}
 					],
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://127.0.0.1:8000/work",
+							"raw": "http://127.0.0.1:8080/work",
 							"protocol": "http",
 							"host": [
 								"127",
@@ -38,7 +48,7 @@
 								"0",
 								"1"
 							],
-							"port": "8000",
+							"port": "8080",
 							"path": [
 								"work"
 							]
@@ -104,6 +114,16 @@
 						}
 					],
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
 						"method": "PUT",
 						"header": [],
 						"body": {
@@ -116,7 +136,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://127.0.0.1:8000/work/{{work_id}}",
+							"raw": "http://127.0.0.1:8080/work/{{work_id}}",
 							"protocol": "http",
 							"host": [
 								"127",
@@ -124,7 +144,7 @@
 								"0",
 								"1"
 							],
-							"port": "8000",
+							"port": "8080",
 							"path": [
 								"work",
 								"{{work_id}}"
@@ -161,6 +181,16 @@
 						}
 					],
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
 						"method": "POST",
 						"header": [],
 						"body": {
@@ -173,7 +203,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://127.0.0.1:8000/work",
+							"raw": "http://127.0.0.1:8080/work",
 							"protocol": "http",
 							"host": [
 								"127",
@@ -181,7 +211,7 @@
 								"0",
 								"1"
 							],
-							"port": "8000",
+							"port": "8080",
 							"path": [
 								"work"
 							]
@@ -222,10 +252,20 @@
 						}
 					],
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://127.0.0.1:8000/employer",
+							"raw": "http://127.0.0.1:8080/employer",
 							"protocol": "http",
 							"host": [
 								"127",
@@ -233,7 +273,7 @@
 								"0",
 								"1"
 							],
-							"port": "8000",
+							"port": "8080",
 							"path": [
 								"employer"
 							]
@@ -260,10 +300,20 @@
 						}
 					],
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://127.0.0.1:8000/employer/{{employer_id}}",
+							"raw": "http://127.0.0.1:8080/employer/{{employer_id}}",
 							"protocol": "http",
 							"host": [
 								"127",
@@ -271,7 +321,7 @@
 								"0",
 								"1"
 							],
-							"port": "8000",
+							"port": "8080",
 							"path": [
 								"employer",
 								"{{employer_id}}"
@@ -308,11 +358,21 @@
 						}
 					],
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
 						"method": "PUT",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"name\": \"Irek Teodorowski\"\r\n}",
+							"raw": "{\r\n    \"address\": \"Lisztgaarde 60, 5344EG Oss\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -320,7 +380,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://127.0.0.1:8000/employer/{{employer_id}}",
+							"raw": "http://127.0.0.1:8080/employer/{{employer_id}}",
 							"protocol": "http",
 							"host": [
 								"127",
@@ -328,7 +388,7 @@
 								"0",
 								"1"
 							],
-							"port": "8000",
+							"port": "8080",
 							"path": [
 								"employer",
 								"{{employer_id}}"
@@ -365,6 +425,16 @@
 						}
 					],
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
 						"method": "POST",
 						"header": [],
 						"body": {
@@ -377,7 +447,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://127.0.0.1:8000/employer",
+							"raw": "http://127.0.0.1:8080/employer",
 							"protocol": "http",
 							"host": [
 								"127",
@@ -385,7 +455,7 @@
 								"0",
 								"1"
 							],
-							"port": "8000",
+							"port": "8080",
 							"path": [
 								"employer"
 							]
@@ -417,10 +487,20 @@
 						}
 					],
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://127.0.0.1:8000/event",
+							"raw": "http://127.0.0.1:8080/event",
 							"protocol": "http",
 							"host": [
 								"127",
@@ -428,7 +508,7 @@
 								"0",
 								"1"
 							],
-							"port": "8000",
+							"port": "8080",
 							"path": [
 								"event"
 							]
@@ -551,11 +631,21 @@
 						}
 					],
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
 						"method": "POST",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"work\": \"{{work_id}}\",\r\n    \"from_time\": 0.0,\r\n    \"to_time\": 450.0,\r\n    \"based_on_hour_loan\": true,\r\n    \"loan_on_top\": 10.00,\r\n    \"name\": \"Marktplaats\",\r\n    \"description\": \"Ik heb advertenties op marktplaats gezet.\"\r\n}",
+							"raw": "{\r\n    \"work\": \"{{work_id}}\",\r\n    \"from_time\": 0.0,\r\n    \"to_time\": 3600.0,\r\n    \"based_on_hour_loan\": true,\r\n    \"loan_on_top\": 10.00,\r\n    \"name\": \"Test\",\r\n    \"description\": \"Een andere event hihi.\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -563,7 +653,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://127.0.0.1:8000/event",
+							"raw": "http://127.0.0.1:8080/event",
 							"protocol": "http",
 							"host": [
 								"127",
@@ -571,7 +661,7 @@
 								"0",
 								"1"
 							],
-							"port": "8000",
+							"port": "8080",
 							"path": [
 								"event"
 							]
@@ -612,10 +702,20 @@
 						}
 					],
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://127.0.0.1:8000/report",
+							"raw": "http://127.0.0.1:8080/report",
 							"protocol": "http",
 							"host": [
 								"127",
@@ -623,7 +723,7 @@
 								"0",
 								"1"
 							],
-							"port": "8000",
+							"port": "8080",
 							"path": [
 								"report"
 							]
@@ -729,6 +829,16 @@
 						}
 					],
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{token}}",
+									"type": "string"
+								}
+							]
+						},
 						"method": "POST",
 						"header": [],
 						"body": {
@@ -741,7 +851,7 @@
 							}
 						},
 						"url": {
-							"raw": "http://127.0.0.1:8000/report",
+							"raw": "http://127.0.0.1:8080/report",
 							"protocol": "http",
 							"host": [
 								"127",
@@ -749,9 +859,67 @@
 								"0",
 								"1"
 							],
-							"port": "8000",
+							"port": "8080",
 							"path": [
 								"report"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "Auth",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Response has token. We are setting token\", () => {",
+									"    var all_response =  pm.response.json()",
+									"    var token = all_response.access_token",
+									"    pm.expect(token).to.be.a('string');",
+									"    pm.environment.set(\"token\", token);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "username",
+									"value": "kacper",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "kacper",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://127.0.0.1:8080/auth",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8080",
+							"path": [
+								"auth"
 							]
 						}
 					},
