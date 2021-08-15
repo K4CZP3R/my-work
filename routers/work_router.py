@@ -11,8 +11,6 @@ router = APIRouter(
     prefix="/work", tags=["work"], responses={404: {"Error": {"message": "Not found."}}, }
 )
 
-COLLECTION_NAME = "work"
-
 
 @router.get("/", response_model=list[WorkModel], dependencies=[Depends(get_current_active_user)])
 async def read() -> List[WorkModel]:
@@ -34,7 +32,7 @@ async def create(model: WorkModel = Body(...)):
     try:
         return await WorkModelFactory().create_from_model(model)
     except EntryNotFound as e:
-        Log.error(str(e))
+        Log().error(str(e))
         return Error.generic_error(404, "Entry creating failed!", 404)
 
 
