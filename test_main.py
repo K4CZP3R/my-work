@@ -81,6 +81,18 @@ def test_auth():
     glo_access_token = response.json()['access_token']
 
 
+def test_auth_invalid():
+    response = client.post('/auth/', data={"username": "invalid", "password": "invalidtoo"})
+    assert response.status_code == 401
+
+
+def test_auth_me():
+    global glo_access_token
+    response = client.get("/auth/me", headers={"Authorization": f'Bearer {glo_access_token}'})
+    assert response.status_code == 200
+    assert response.json()['username'] == 'kacper'
+
+
 def test_work_create():
     work_name = "Test Work"
     hour_loan = 10.00
