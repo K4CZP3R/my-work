@@ -1,4 +1,6 @@
 from fastapi.testclient import TestClient
+
+import config
 from main import app
 from models.authenticate import RequestAuthenticateModel
 from fastapi.encoders import jsonable_encoder
@@ -71,6 +73,12 @@ def __create_report(work_id, events_ids, access_token):
 
     assert "_id" in json
     return json["_id"]
+
+
+def test_wipe_all():
+    response = client.get(f"/wipe/{config.SECRET_KEY}")
+    assert response.status_code == 200
+    assert response.json()['status'] == 'ok'
 
 
 def test_auth():

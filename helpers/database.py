@@ -29,6 +29,9 @@ class Database(metaclass=Singleton):
 
         self.db = self.client[config.MONGO_DB]
 
+    async def wipe_all(self):
+        await self.client.drop_database(config.MONGO_DB)
+
     def find_one(self, db_name: str, filter: dict):
         return self.db[db_name].find_one(filter)
 
@@ -48,7 +51,7 @@ class Database(metaclass=Singleton):
 
             if update_result.modified_count == 1:
                 if (
-                    updated_obj := await self.find_one(db_name, {"_id": id})
+                        updated_obj := await self.find_one(db_name, {"_id": id})
                 ) is not None:
                     return updated_obj
 
