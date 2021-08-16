@@ -1,12 +1,7 @@
-from starlette.responses import JSONResponse
-
 from helpers.error import EntryNotFound, EntryMalformed, Error
 from models.employer import UpdateEmployerModel, EmployerModel, EmployerModelFactory
 from fastapi import APIRouter, Body, Depends
-from models.response import ResponseErrorModel
 from typing import List, Any
-from helpers.database import Database
-from fastapi.encoders import jsonable_encoder
 from routers.authentication_router import get_current_active_user
 
 router = APIRouter(

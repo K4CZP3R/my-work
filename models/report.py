@@ -1,7 +1,7 @@
 from fastapi.encoders import jsonable_encoder
 from starlette.responses import FileResponse
 
-from helpers.error import EntryNotFound, EntryMalformed
+from helpers.error import EntryNotFound, EntryMalformed, CalculationFailed
 from models.employer import EmployerModel
 from helpers.time import Time
 from helpers.log import Log
@@ -46,7 +46,11 @@ class ReportModel(BaseModel):
                 employers += f"  {addr}\n"
         events = ""
         for event in self.events:
-            events += f"- {event.name} ({event.description}) | {await event.get_worked_for()} | On top: {event.loan_on_top} | {await event.get_loan()}\n"
+            events += f"- {event.name} ({event.description}) | {await event.get_worked_for()} | On top: {event.loan_on_top} "
+            try:
+                events += f"| {await event.get_loan()}\n"
+            except CalculationFailed as e:
+                events += f"| Error.\n"
 
         text = f"""
         Werkgever: {self.work.name} ({self.work.id})
@@ -95,7 +99,7 @@ class ReportModelFactory(Database):
             to_resp.append(ReportModel.parse_obj(i))
 
         return to_resp
-        
+
     async def get_by_id(self, report_id: str) -> ReportModel:
         """
         Gets report model by its id

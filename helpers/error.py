@@ -7,7 +7,12 @@ from models.response import ResponseErrorModel
 class EntryNotFound(Exception):
     pass
 
+
 class EntryMalformed(Exception):
+    pass
+
+
+class CalculationFailed(Exception):
     pass
 
 

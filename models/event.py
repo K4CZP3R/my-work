@@ -1,13 +1,12 @@
 from fastapi.encoders import jsonable_encoder
 
-from helpers.error import EntryNotFound, EntryMalformed
-from models.work import WorkModel
+from helpers.error import EntryNotFound, EntryMalformed, CalculationFailed
 from helpers.time import Time
 from pydantic import BaseModel, Field, ValidationError
 from bson import ObjectId
 from typing import Optional, List
 from helpers.database import PyObjectId, Database
-from helpers.log import Log
+from models.work import WorkModelFactory
 
 
 class EventModel(BaseModel):
@@ -29,15 +28,14 @@ class EventModel(BaseModel):
         return Time.get_hours_between_ms(self.from_time, self.to_time)
 
     async def get_loan(self):
-        resp = await Database().find_one("work", {"_id": str(self.work)})
-        if resp is None:
-            Log().error(f"There is no work with id {self.work}")
-            return None
-        resp = WorkModel.parse_obj(resp)
-        hour_loan = await self.get_worked_for() * resp.hour_loan
-        loan_total = self.loan_on_top + (
-            (await self.get_worked_for() * resp.hour_loan) if self.based_on_hour_loan else 0)
-        return loan_total
+        try:
+            response = await WorkModelFactory().get_by_id(str(self.work))
+            return self.loan_on_top + (
+                (await self.get_worked_for() * response.hour_loan) if self.based_on_hour_loan else 0)
+        except EntryNotFound as e:
+            raise CalculationFailed(e)
+        except EntryMalformed as e:
+            raise CalculationFailed(e)
 
     class Config:
         allow_population_by_field_name = True
