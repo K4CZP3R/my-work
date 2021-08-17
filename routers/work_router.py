@@ -26,7 +26,7 @@ async def read_work_by_id(work_id: str) -> Any:
         return Error.generic_error(404, "Entry not found!", 404)
 
 
-@router.post("/", response_description="Add new employer", response_model=WorkModel,
+@router.post("/", response_description="Add new work", response_model=WorkModel,
              dependencies=[Depends(get_current_active_user)])
 async def create(model: WorkModel = Body(...)):
     try:
