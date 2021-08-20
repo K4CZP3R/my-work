@@ -17,7 +17,7 @@ from helpers.log import Log
 from slowapi import Limiter, _rate_limit_exceeded_handler
 from slowapi.util import get_remote_address
 
-origins = ["http://127.0.0.1:4200"]
+origins = ["http://127.0.0.1:4200", "http://localhost:4200"]
 
 db = Database()
 limiter = Limiter(key_func=get_remote_address)
