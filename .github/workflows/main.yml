@@ -10,7 +10,7 @@ on:
     branches: ['master']
 
 env:
-  REGISTRY: ghcr.io
+  REGISTRY: registry.k4czp3r.xyz
   IMAGE_NAME: ${{ github.repository }}
 
 jobs:
@@ -28,8 +28,8 @@ jobs:
         uses: docker/login-action@f054a8b539a109f9f41c372932f1ae047eff08c9
         with:
           registry: ${{ env.REGISTRY }}
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
+          username: ${{ secrets.K4CZP3R_USERNAME }}
+          password: ${{ secrets.K4CZP3R_PASSWORD }}
 
       - name: Extract metadata (tags, labels) for Docker
         id: meta
